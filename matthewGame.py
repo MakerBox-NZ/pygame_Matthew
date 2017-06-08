@@ -1,4 +1,3 @@
-#C:/Python361/0myprogs/RATA/matthewGame.py
 #!/usr/bin/
 #By Matthew Q McDermott
 #Thanks to Jess-
@@ -9,7 +8,12 @@ import os
 from pygame.locals import *
 
 '''OBJECTS'''
-
+class Player(pygame.sprite.Sprite):
+    #spawn a player
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = [ ]
+        images = pygame.image.load(os.path.join('images', 'hero.png')).convert()
 
 
 '''SETUP COLOURS'''
@@ -23,8 +27,19 @@ fps = 40
 afps = 4
 clock = pygame.time.Clock()
 pygame.init()
-screen = pygame.display.set_mode([screenX, screenY])
 
+main = True
+
+screen = pygame.display.set_mode([screenX, screenY])
+backdrop = pygame.image.load(os.path.join('images', 'Backgrond#1.png')).convert()
+backdropRect = screen.get_rect()
+
+player = Player() #Spawn player
+player.rect.x = 0
+player.rect.y = 0
+movingsprites = pygame.sprite.Group()
+movingsprites.add(player)
+                                          
 '''MAIN LOOP'''
 '''
 while True:
