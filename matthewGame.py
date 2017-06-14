@@ -13,8 +13,11 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.images = [ ]
-        images = pygame.image.load(os.path.join('images', 'hero.png')).convert()
-
+        img = pygame.image.load(os.path.join('images', 'hero.png')).convert()
+        self.images.append(img)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        
 
 '''SETUP COLOURS'''
 BLACK = (0, 0, 0)
@@ -22,6 +25,10 @@ BLACK = (0, 0, 0)
 '''SETUP'''
 screenX = 960 #width
 screenY = 720 #height
+
+alpha = (0, 0, 0)
+black = (1, 1, 1)
+white = (255, 255, 255)
 
 fps = 40
 afps = 4
@@ -31,7 +38,7 @@ pygame.init()
 main = True
 
 screen = pygame.display.set_mode([screenX, screenY])
-backdrop = pygame.image.load(os.path.join('images', 'Backgrond#1.png')).convert()
+backdrop = pygame.image.load(os.path.join('images', 'stage.png')).convert()
 backdropRect = screen.get_rect()
 
 player = Player() #Spawn player
@@ -41,7 +48,7 @@ movingsprites = pygame.sprite.Group()
 movingsprites.add(player)
                                           
 '''MAIN LOOP'''
-'''
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.KEYUP:
@@ -49,10 +56,23 @@ while True:
                 pygame.quit()
                 sys.exit()
                 main == False
-'''
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-    screen.fill(BLACK)
+
+            if event.key == pygame.K_LEFT:
+                print('left stop')
+            if event.key == pygamw.K_RIGHT:
+                print('right stop')
+            if event.key == pygame.K_UP:
+                print('up stop')
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                print('left')
+            if event.key == pygame.K_RIGHT:
+                print('right')
+            if event.key == pygame.K_UP:
+                print('up')
+            
+    screen.blit(backdrop, backdropRect)
+    movingsprites.draw(screen) #draw player
+    pygame.display.flip()
+    clock.ticks(fps)
