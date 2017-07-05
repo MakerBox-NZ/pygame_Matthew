@@ -15,6 +15,8 @@ class Player(pygame.sprite.Sprite):
 
         self.momentumX = 0
         self.momentumY = 0
+
+        self.score = 0 #set score
         self.images = [ ]
         img = pygame.image.load(os.path.join('images', 'hero.png')).convert()
         self.images.append(img)
@@ -28,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.momentumX += x
         self.momentumY += y
 
-    def update(self):
+    def update(self, enemy_list):
         #update sprite position
         currentX = self.rect.x
         nextX = currentX + self.momentumX
@@ -37,6 +39,12 @@ class Player(pygame.sprite.Sprite):
         currentY = self.rect.y
         nextY = currentY + self.momentumY
         self.rect.y = nextY
+
+        #collisions
+        enemy_hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
+        for enemy in enemy_hit_list:
+            self.score -= 1
+            print(self.score)
 
 class Enemy(pygame.sprite.Sprite):
     #spawn an enemy
@@ -49,18 +57,19 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.counter = 0 #counter variable
-        def move(self):
-            #enemy movement
-            if self.counter >= 0 and self.counter <= 30:
-                self.rect.x += 2
-            elif self.counter >= 20 and self.counter <= 60:
-                self.rect.x -= 2
-            else:
-                self.counter = 0
-                print('reset')
-
-            self.counter += 1
         
+    def move(self):
+        #enemy movement
+        if self.counter >= 0 and self.counter <= 30:
+            self.rect.x += 2
+        elif self.counter >= 30 and self.counter <= 60:
+            self.rect.x -= 2
+        else:
+            self.counter = 0
+            print('reset')
+
+        self.counter += 1
+    
 
 '''SETUP COLOURS'''
 BLACK = (0, 0, 0)
@@ -126,7 +135,7 @@ while True:
                 print('up')
             
     screen.blit(backdrop, backdropRect)
-    player.update()
+    player.update(enemy_list)
     movingsprites.draw(screen) #draw player
     
     enemy_list.draw(screen) #refresh enemies
