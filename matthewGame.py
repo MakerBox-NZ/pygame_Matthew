@@ -66,10 +66,28 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = nextY
 
         #collisions
+        block_hit_list = pygame.sprite.spritecollide(self, platform_list, False)
+        if self.momentumX > 0:
+            for block in block_hit_list:
+                self.rect.y = currentY
+                self.rect.x = currentX+9
+
+        if self.momentumY > 0:
+            for block in block_hit_list:
+                self.rect.y = currentY
+                self.momentumY = 0
+                
         enemy_hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
         for enemy in enemy_hit_list:
             self.score -= 1
             print(self.score)
+
+    def gravity(self):
+        self.momentumY += 3.2 #how fast player falls
+
+        if self.rect.y > 960 and self.momentumY >= 0:
+            self.momentumY = 0
+            self.rect.y = screenY-20
 
 class Enemy(pygame.sprite.Sprite):
     #spawn an enemy
@@ -163,6 +181,7 @@ while True:
             
     screen.blit(backdrop, backdropRect)
     platform_list.draw(screen) #draw platforms on screen
+    player.gravity()
     player.update(enemy_list) #update player position
     movingsprites.draw(screen) #draw player
     
