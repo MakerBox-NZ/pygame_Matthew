@@ -41,6 +41,10 @@ class Player(pygame.sprite.Sprite):
         self.momentumX = 0
         self.momentumY = 0
 
+        #gravity varibles
+        self.collide_delta = 0
+        self.jump_delta = 6
+
         self.score = 0 #set score
         self.images = [ ]
         img = pygame.image.load(os.path.join('images', 'hero.png')).convert()
@@ -65,17 +69,30 @@ class Player(pygame.sprite.Sprite):
         nextY = currentY + self.momentumY
         self.rect.y = nextY
 
+        #gravity
+        if self.collide_delta < 6 and self.jump_delta < 6:
+            self.jump_delta = 6*2
+            self.momentumY -= 33 #how can you jump
+
+            self.collide_delta +=6
+            self.jump_delta += 6
+
+        def jump (self, platform_list):
+            self.jump_delta = 0
+        
         #collisions
         block_hit_list = pygame.sprite.spritecollide(self, platform_list, False)
         if self.momentumX > 0:
             for block in block_hit_list:
                 self.rect.y = currentY
                 self.rect.x = currentX+9
+                self.collide_delta = 0 #stop jumping
 
         if self.momentumY > 0:
             for block in block_hit_list:
                 self.rect.y = currentY
                 self.momentumY = 0
+                self.collide_delta = 0 #stop jumping
                 
         enemy_hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
         for enemy in enemy_hit_list:
@@ -177,7 +194,7 @@ while True:
                 print('right')
                 player.control(movesteps, 0)
             if event.key == pygame.K_UP:
-                print('up')
+                player.jump(platform_list)
             
     screen.blit(backdrop, backdropRect)
     platform_list.draw(screen) #draw platforms on screen
