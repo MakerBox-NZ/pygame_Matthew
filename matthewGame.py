@@ -8,6 +8,12 @@ import os
 from pygame.locals import *
 
 '''OBJECTS'''
+
+def stats(score):
+    #display text, 1, colour (rgb)
+    text_score = myfont.render("Score: "+str(score), 1, (250,147,248))
+    screen.blit(text_score, (4, 4))
+    
 class Platform(pygame.sprite.Sprite):
     #x location, y location, img width, img height, img file)
     def __init__(self, xloc, yloc, imgw, imgh, img):
@@ -46,6 +52,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_delta = 6
 
         self.score = 0 #set score
+        self.damage = 0 #player is hit
         self.images = [ ]
         img = pygame.image.load(os.path.join('images', 'hero.png')).convert()
         self.images.append(img)
@@ -92,9 +99,20 @@ class Player(pygame.sprite.Sprite):
                 self.collide_delta = 0 #stop jumping
                 
         enemy_hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
-        for enemy in enemy_hit_list:
+        '''for enemy in enemy_hit_list:
             self.score -= 1
-            print(self.score)
+            print(self.score)'''
+        if self.damage == 0:
+            for enemy in enemy.hit_list:
+                if not self.rect.contains(enemy):
+                    self.damage = self.rect.colliderect(enemy)
+                    print(self.score)
+
+        if self.damage == 1:
+            idx = self.rect.collidelist(enemy_hit_list)
+            if idx == -1:
+                self.damage - 0
+                self.score -= 1
 
     def jump (self, platform_list):
         self.jump_delta = 0
