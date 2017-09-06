@@ -5,6 +5,7 @@
 import pygame
 import sys
 import os
+import pygame.freetype #load fonts
 from pygame.locals import *
 
 '''OBJECTS'''
@@ -164,7 +165,11 @@ white = (255, 255, 255)
 fps = 40
 afps = 4
 clock = pygame.time.Clock()
-pygame.init()
+pygame.font.init() #start free type
+
+font_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fonts", "amazdoom.tff")
+font_size = 64
+myfont = pygame.font.Font(font_path, font_size)
 
 main = True
      
@@ -242,5 +247,8 @@ while True:
     
     enemy_list.draw(screen) #refresh enemies
     enemy.move() #move enemy sprite
+
+    stats(player.score)
+    
     pygame.display.flip()
     clock.tick(fps)
