@@ -39,6 +39,16 @@ class Platform(pygame.sprite.Sprite):
         platform_list.add(block) #after each block
 
         return platform_list # at end of function level1
+
+    def loot1():
+        #create loot
+        platform_list = pygame.sprite.Group()
+        block = Platform(0, 591, 768, 118,os.path.join('images','Rainbow-300px.png'))
+        platform_list.add(block) #after each block
+
+        return platform_list # at end of function level1
+
+    
     
 class Player(pygame.sprite.Sprite):
     #spawn a player
@@ -176,7 +186,6 @@ main = True
 screen = pygame.display.set_mode([screenX, screenY])
 backdrop = pygame.image.load(os.path.join('images', 'stage.png')).convert()
 backdropRect = screen.get_rect()
-
 platform_list = Platform.level1() #set stage for Level 1
 
 player = Player() #Spawn player
