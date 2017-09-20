@@ -114,7 +114,7 @@ class Player(pygame.sprite.Sprite):
             self.score -= 1
             print(self.score)'''
         if self.damage == 0:
-            for enemy in enemy.hit_list:
+            for enemy in enemy_hit_list:
                 if not self.rect.contains(enemy):
                     self.damage = self.rect.colliderect(enemy)
                     print(self.score)
@@ -177,14 +177,14 @@ afps = 4
 clock = pygame.time.Clock()
 pygame.font.init() #start free type
 
-font_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fonts", "amazdoom.tff")
+font_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fonts", "amazdoom.ttf")
 font_size = 64
 myfont = pygame.font.Font(font_path, font_size)
 
 main = True
      
 screen = pygame.display.set_mode([screenX, screenY])
-backdrop = pygame.image.load(os.path.join('images', 'stage.png')).convert()
+backdrop = pygame.image.load(os.path.join('images', 'Background1.png')).convert()
 backdropRect = screen.get_rect()
 platform_list = Platform.level1() #set stage for Level 1
 
